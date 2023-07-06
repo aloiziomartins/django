@@ -94,15 +94,14 @@
                 <span class="fonte-destaque">Suas categoria</span>
                 <br>
                 <div class="contas">
-
-                    
+                    {% for categoria in categorias %}            
                         <div class="lista-contas-main">
-                            <span>Lazer</span>
-
-                            <span class="total-conta"><a href="#"><img src="#"></a></span>
+                            <span>{{categoria}}</span>
+                            
+                            <span class="total-conta"><a href="{% url 'update_categoria' categoria.id %}"><img src="{% if categoria.essencial %}{% static 'perfil/img/check.png' %}{% else %}{% static 'perfil/img/exit.png' %}{% endif %}"></a></span>
                         </div>
                         <br>
-                   
+                   {% endfor %}
                     
                 </div>
             </div>
