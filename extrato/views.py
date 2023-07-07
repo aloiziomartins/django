@@ -4,7 +4,12 @@ from django.contrib.messages import constants
 from django.contrib import messages
 from .models import Valores
 from datetime import datetime
-
+from django.template.loader import render_to_string
+import os
+from django.conf import settings
+from io import BytesIO
+from weasyprint import HTML
+from django.http import FileResponse
 
 # Create your views here.
 
@@ -70,3 +75,19 @@ def view_extrato(request):
 
     return render(request, 'view_extrato.html', {'valores': valores, 'contas': contas, 'categorias': categorias})
 
+def exportar_pdf(request):
+    valores = Valores.objects.filter(data__month=datetime.now().month)
+    contas = Conta.objects.all()
+    categorias = Categoria.objects.all()
+    
+    path_template = os.path.join(settings.BASE_DIR, 'templates/partials/extrato.html')
+    
+    path_output = BytesIO()
+
+    template_render = render_to_string(path_template, {'valores': valores, 'contas': contas, 'categorias': categorias})
+    HTML(string=template_render).write_pdf(path_output)
+
+    path_output.seek(0)
+    
+
+    return FileResponse(path_output, filename="extrato.pdf")
