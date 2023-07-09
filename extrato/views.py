@@ -54,7 +54,7 @@ def novo_valor(request):
         conta.save()
         
         messages.add_message(request, constants.SUCCESS, 'Categoria cadastrada com sucesso')
-        return redirect('/extrato/novo_valor')
+        return redirect('/contas/definir_contas')
     
 
 def view_extrato(request):
